@@ -8,8 +8,9 @@ public class Voxel : MonoBehaviour
     public float speed = 5;
     public float destroyTime = 5.0f;
     float currentTime = 0;
-    void Start()
+    void OnEnable()
     {
+        currentTime = 0;
         Vector3 direction = Random.insideUnitSphere;  // 크기가 1이고 방향만 존재함
         
         Rigidbody rb = gameObject.GetComponent<Rigidbody>();
@@ -22,7 +23,10 @@ public class Voxel : MonoBehaviour
         currentTime = currentTime + Time.deltaTime;
         if(currentTime > destroyTime) // 시간 초과
         {
-            Destroy(gameObject);
+            gameObject.SetActive(false);    // 자기 자신을 비활성화 함
+            VoxelMaker.voxelPool.Add(gameObject);  // VoxelMaker의 오브젝트풀에 자기 자신을 추가
+
+            //Destroy(gameObject);
         }
     }
 }
